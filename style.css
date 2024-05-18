@@ -1,4 +1,3 @@
-/* The page is NOT responsive. You can implement responsiveness yourself if you wanna have some fun 😃 */
 
 :root {
   --color-primary: #5ec576;
@@ -671,4 +670,11 @@ h4 {
   color: #bbb;
   font-size: 1.5rem;
   font-weight: 400;
+}
+
+/* my message */
+.my-message{
+  background-color: red;
+  height: 20px;
+  width: 100%;
 }
