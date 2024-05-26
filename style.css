@@ -674,7 +674,12 @@ h4 {
 
 /* my message */
 .my-message{
-  background-color: red;
-  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   width: 100%;
+  background-color: white;
+  color: #bbb;
+  font-size: 1.5rem;
+  font-weight: 400;
 }

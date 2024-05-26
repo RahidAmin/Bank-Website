@@ -61,14 +61,14 @@ console.log(document.getElementsByClassName('btn'));
 
 const message=document.createElement('div');
       message.classList.add('my-message');
-      message.innerHTML='<button>Click</button>'
+      // message.innerHTML='<button>Click</button>'
       //  message.textContent='We use cookies for improved functionility and analytics';
-      // message.innerHTML='We use cookies for improved functionility and analytics. <button class="btn btn--close--cookie">Get it</button>';
+      message.innerHTML='We use cookies for improved functionility and analytics. <button class="btn btn--close--cookie">Get it</button>';
 
 
       header1.prepend(message); //it will show upper side of header(1st child)
       //header1.append(message) //it will show lower side of header(last child)
-      // header1.append(message.cloneNode(true))
+      //  header1.append(message.cloneNode(true))
 
       // header1.before(message);
       // header1.after(message)
@@ -80,3 +80,87 @@ const message=document.createElement('div');
       message.remove();
     })
      
+    //--------Styles------
+
+    message.style.backgroundColor='darkblue';
+    message.style.width='120%';
+
+    console.log(message.style.height) //it won't work
+   
+         
+    message.style.height=Number.parseFloat(getComputedStyle(message).height,10)+30+'px';
+    console.log(getComputedStyle(message).height);
+    
+    document.documentElement.style.setProperty('--color-primary','skyblue');  //modify the root in css
+
+    //----------Attributes-------
+
+    const logo=document.querySelector('.nav__logo');
+    console.log(logo.src);
+    console.log(logo.alt);
+    logo.alt='beautiful logo';
+    console.log(logo.alt)
+
+    //non standard
+    console.log(logo.designer)
+    console.log(logo.getAttribute('designer')) //it will work
+
+
+    logo.setAttribute('company','BaNkIsT');
+    console.log(logo.getAttribute('company'));
+
+    console.log(logo.src)//absolute result
+    console.log(logo.getAttribute('src'))//relative result
+    
+    const link=document.querySelector('.nav__link--btn');
+    console.log(link.href);
+    console.log(link.getAttribute('href'));
+
+    ///---Data attribute
+    console.log(logo.dataset.versionNumber);
+
+    //classes
+
+    logo.classList.add('i','j');
+    logo.classList.remove('i','j');
+    logo.classList.toggle('i');
+    logo.classList.contains('i'); //not includes
+
+
+    ///-----------Implementing smooth scrolling---------------///
+
+    const buttonScrollTo=document.querySelector('.btn--scroll-to');
+    const section1=document.querySelector('#section--1');
+
+    buttonScrollTo.addEventListener('click',function(event)
+  {
+    const s1coords=section1.getBoundingClientRect();
+    console.log(s1coords)
+
+    // console.log(event.target.getBoundingClientRect());
+
+    console.log('Current Scroll (X/Y)',window.pageXOffset,window.pageYOffset); //pageXOffset means how much have you scrolled
+
+    console.log('Height/Width viewport:',document.documentElement.clientHeight,document.documentElement.clientWidth);
+
+
+   ///---Scrolling-----///
+    // window.scrollTo(s1coords.left + window.pageXOffset,s1coords.top + window.pageYOffset); //current position+current scroll
+
+    //---smooth scrolling---//
+    // window.scrollTo({
+    //   left:s1coords.left + window.pageXOffset,
+    //   top:s1coords.top + window.pageYOffset,
+    //   behavior:"smooth"
+    // })
+
+    //---more mordern way for smooth scrolling---//
+
+    section1.scrollIntoView({behavior:"smooth"})
+
+
+
+  })
+
+    
+
