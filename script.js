@@ -162,5 +162,57 @@ const message=document.createElement('div');
 
   })
 
-    
+  //----------Types of events and events handlers----------///
 
+  const h1=document.querySelector('h1');
+
+  const alertH1=function(event)
+  {
+    alert('EventListener:Great!You are reading the heading');
+  }
+
+  h1.addEventListener('mouseenter',alertH1);
+  setTimeout(() => {
+    h1.removeEventListener('mouseenter',alertH1)
+  }, 3000);
+
+//---Event Propagation bubbling and capturing---//
+
+//rgb(255,255,255)
+
+const randomInt=function(min,max)
+{
+ return Math.floor(Math.random()*(max-min+1)+min);
+}
+
+const randomColour=()=>
+  {
+   return `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`
+   
+  }
+ console.log(randomColour())
+  
+  document.querySelector('.nav__link').addEventListener('click',function(e)
+{
+  this.style.backgroundColor=randomColour();
+
+  console.log('Link',e.target,e.currentTarget);   /////e.currentTarget same as this keyword
+
+  //stop propagation
+  // e.stopPropagation();
+});
+
+document.querySelector('.nav__links').addEventListener('click',function(e)
+{
+  this.style.backgroundColor=randomColour();
+  console.log('Container',e.target,e.currentTarget);
+
+  //Stop Propagation
+  // e.stopPropagation();
+})
+
+document.querySelector('.nav').addEventListener('click',function(e)
+{
+  this.style.backgroundColor=randomColour();
+  console.log('Nav',e.target,e.currentTarget);
+})
