@@ -1,11 +1,14 @@
 'use strict';
 
-
-//Modal window
-const modal = document.querySelector('.modal');
+const buttonScrollTo=document.querySelector('.btn--scroll-to');
+ const section1=document.querySelector('#section--1');
+ const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
+
+
+//Modal window
 
 const openModal = function (e) {
   e.preventDefault();
@@ -33,6 +36,81 @@ document.addEventListener('keydown', function (e) {
 });
 
 
+ ///-----------Implementing smooth scrolling---------------///
+
+ buttonScrollTo.addEventListener('click',function(event)
+{
+ const s1coords=section1.getBoundingClientRect();
+ console.log(s1coords)
+
+ // console.log(event.target.getBoundingClientRect());
+
+ console.log('Current Scroll (X/Y)',window.pageXOffset,window.pageYOffset); //pageXOffset means how much have you scrolled
+
+ console.log('Height/Width viewport:',document.documentElement.clientHeight,document.documentElement.clientWidth);
+
+
+///---Scrolling-----///
+ // window.scrollTo(s1coords.left + window.pageXOffset,s1coords.top + window.pageYOffset); //current position+current scroll
+
+ //---smooth scrolling---//
+ // window.scrollTo({
+ //   left:s1coords.left + window.pageXOffset,
+ //   top:s1coords.top + window.pageYOffset,
+ //   behavior:"smooth"
+ // })
+
+ //---more mordern way for smooth scrolling---//
+
+ section1.scrollIntoView({behavior:"smooth"})
+
+
+
+})
+
+
+///-----------Page Navigation--------------////  ***Important Section***
+
+                                      //*****This is easy for me*****
+// document.querySelectorAll('.nav__link').forEach(function(el)
+// {
+//   el.addEventListener('click',function(e)
+// {
+//   e.preventDefault();
+//   const id=this.getAttribute('href');
+//   console.log(id);
+//   document.querySelector(id).scrollIntoView({behavior:'smooth'})
+// })
+// })
+
+//1.add event listener to the common parent element
+//2.determine what element organized the element
+
+////Event delegation   
+document.querySelector('.nav__links').addEventListener('click',function(e)
+{
+  e.preventDefault();
+  
+  //Maching Strategy
+  if(e.target.classList.contains('nav__link'))
+    {
+      const id=e.target.getAttribute('href');
+      document.querySelector(id).scrollIntoView({behavior:'smooth'})
+    }
+
+})
+
+
+//---------Tabbed Component----------//
+
+const tabs=document.querySelectorAll('.operations__tab');
+const tabsContainer=document.querySelector('.operations__tab-container');
+const tabsContent=document.querySelector('.operations__content');
+
+tabs.forEach(t=>t.addEventListener('click',()=>console.log('TAB')))
+
+
+
 //////-------||||||---------Out of the Project----------------||||||-----------///////
 
 
@@ -45,9 +123,9 @@ const header1=document.querySelector('.header');
 
 const allSections=document.querySelectorAll('.section');
 
-allSections.forEach(sec=>sec.addEventListener('click',()=>{
-console.log('Hello')
-}))
+// allSections.forEach(sec=>sec.addEventListener('click',()=>{
+// console.log('Hello')
+// }))
 
 document.getElementById('section--1');
 
@@ -127,40 +205,7 @@ const message=document.createElement('div');
     logo.classList.contains('i'); //not includes
 
 
-    ///-----------Implementing smooth scrolling---------------///
-
-    const buttonScrollTo=document.querySelector('.btn--scroll-to');
-    const section1=document.querySelector('#section--1');
-
-    buttonScrollTo.addEventListener('click',function(event)
-  {
-    const s1coords=section1.getBoundingClientRect();
-    console.log(s1coords)
-
-    // console.log(event.target.getBoundingClientRect());
-
-    console.log('Current Scroll (X/Y)',window.pageXOffset,window.pageYOffset); //pageXOffset means how much have you scrolled
-
-    console.log('Height/Width viewport:',document.documentElement.clientHeight,document.documentElement.clientWidth);
-
-
-   ///---Scrolling-----///
-    // window.scrollTo(s1coords.left + window.pageXOffset,s1coords.top + window.pageYOffset); //current position+current scroll
-
-    //---smooth scrolling---//
-    // window.scrollTo({
-    //   left:s1coords.left + window.pageXOffset,
-    //   top:s1coords.top + window.pageYOffset,
-    //   behavior:"smooth"
-    // })
-
-    //---more mordern way for smooth scrolling---//
-
-    section1.scrollIntoView({behavior:"smooth"})
-
-
-
-  })
+   
 
   //----------Types of events and events handlers----------///
 
@@ -216,3 +261,48 @@ document.querySelector('.nav').addEventListener('click',function(e)
   this.style.backgroundColor=randomColour();
   console.log('Nav',e.target,e.currentTarget);
 })
+
+
+
+
+
+///-----Dom Traversing---------------///
+
+//going Downwards:child
+const h=document.querySelector('h1');
+console.log(h.querySelectorAll('.highlight'));
+console.log(h.childNodes)
+console.log(h.children);
+
+h.firstElementChild.style.color='white';
+h.lastElementChild.style.color='red';
+
+//Going Upwards:parents
+
+console.log(h.parentNode)
+console.log(h.parentElement)
+  
+// h.closest('.header').style.background='var(--gradient-secondary)';
+// h.closest('h1').style.background='var(--color-tertiary)';
+
+//Going Sideways:siblings
+
+console.log(h.previousElementSibling);
+console.log(h.nextElementSibling);
+
+console.log(h.previousSibling);
+console.log(h.nextSibling);
+
+console.log(h.parentElement.children)
+
+// const x=[1,2,4]; ///x is not using anyware
+// [...h.parentElement.children].forEach(function(el)
+// {
+//   if(el !== h)
+//     {
+//       el.style.transform='scale(0.5)';
+//     }
+// })
+
+
+//----------Building a Tabbed component----------///
