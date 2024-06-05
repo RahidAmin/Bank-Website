@@ -71,7 +71,7 @@ document.addEventListener('keydown', function (e) {
 
 ///-----------Page Navigation--------------////  ***Important Section***
 
-                                      //*****This is easy for me*****
+                                      //*****This is easy for me*****bad practice***
 // document.querySelectorAll('.nav__link').forEach(function(el)
 // {
 //   el.addEventListener('click',function(e)
@@ -105,9 +105,41 @@ document.querySelector('.nav__links').addEventListener('click',function(e)
 
 const tabs=document.querySelectorAll('.operations__tab');
 const tabsContainer=document.querySelector('.operations__tab-container');
-const tabsContent=document.querySelector('.operations__content');
+const tabsContent=document.querySelectorAll('.operations__content');
 
-tabs.forEach(t=>t.addEventListener('click',()=>console.log('TAB')))
+// bad practice
+// tabs.forEach(t=>t.addEventListener('click',()=>console.log('TAB')))
+tabsContainer.addEventListener('click',function(e)
+{
+ //const clicked=e.target;
+ //const clicked=e.target.parentElement; 
+ const clicked=e.target.closest('.operations__tab');
+ console.log(clicked)
+
+ //Guard Clause
+ if(!clicked) return;  //Mordern way//if nothing clicked it will imidiately finish the function
+
+//Remove active classes
+tabs.forEach(t=>t.classList.remove('operations__tab--active'));
+
+tabsContent.forEach(c=>c.classList.remove('operations__content--active'));
+
+
+
+ //Activate Tab
+
+ clicked.classList.add('operations__tab--active');
+
+
+//  if(clicked)
+//   {
+//     clicked.classList.add('operations__tab--active');
+//   }
+
+//Activate Content Area
+document.querySelector(`.operations__content--${clicked.dataset.tab}`).classList.add('operations__content--active');
+
+})
 
 
 
