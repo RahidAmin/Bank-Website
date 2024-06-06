@@ -181,20 +181,88 @@ const handleHover=function(e)  //opacity is not defined because of bind method
 nav.addEventListener('mouseover',handleHover.bind(0.5));
 nav.addEventListener('mouseout',handleHover.bind(1));
 
-////-------------Stiky Navigation------------////
+////-------------Sticky Navigation------------////
 
-const initialCoords=section1.getBoundingClientRect();
+// const initialCoords=section1.getBoundingClientRect();
 
 
-window.addEventListener('scroll',function()
+// window.addEventListener('scroll',function()
+// {
+//   if(window.scrollY>initialCoords.top)
+//     {
+//       nav.classList.add('sticky');
+//     }else{
+//        nav.classList.remove('sticky');
+//     }
+// })
+
+//---------Intersection observer API-----------//
+
+// const obsCallBack=function(entries,observer)
+// {
+//   entries.forEach(entry=>
+//     {
+//       console.log(entry)
+//     }
+//   )
+// }
+// const obsOption={
+//    root:null,
+//    threshold:0,   //[0,0.2,0.3]
+// }
+
+// const observer=new IntersectionObserver(obsCallBack,obsOption);
+// observer.observe(section1);
+
+
+
+const header=document.querySelector('.header');
+const navHeight=nav.getBoundingClientRect().height;
+
+const stickyNav=function(entries)
 {
-  if(window.scrollY>initialCoords.top)
+  const [entry]=entries;
+  //console.log(entry)
+  if(!entry.isIntersecting)
     {
-      nav.classList.add('sticky');
+    nav.classList.add('sticky')
     }else{
-       nav.classList.remove('sticky');
+      nav.classList.remove('sticky')
     }
+}
+const headerOption={
+  root:null,
+  threshold:0,
+  rootMargin:`-${navHeight}px`,
+}
+
+const headerObserver=new IntersectionObserver(stickyNav,headerOption);
+
+headerObserver.observe(header);
+
+///--------------Reveal Sections------------///
+const allsSections=document.querySelectorAll('.section');
+
+const revealSections=function(entries,observer)
+{
+  const [entry]=entries;
+  console.log(entry);
+  
+  if(!entry.isIntersecting) return;
+  entry.target.classList.remove('section--hidden');
+  observer.unobserve(entry.target)
+}
+
+const sectionObserver=new IntersectionObserver(revealSections,{
+  root:null,
+  threshold:0.15,
+});
+
+allsSections.forEach(section=>{
+  sectionObserver.observe(section);
+  section.classList.add('section--hidden');
 })
+
 
 
 
@@ -204,36 +272,36 @@ window.addEventListener('scroll',function()
 
 
 ///---Selecting Elements
-console.log(document.documentElement);
-console.log(document.head);
-console.log(document.body);
+// console.log(document.documentElement);
+// console.log(document.head);
+// console.log(document.body);
 
-const header1=document.querySelector('.header');
+// const header1=document.querySelector('.header');
 
-const allSections=document.querySelectorAll('.section');
+// const allSections=document.querySelectorAll('.section');
 
 // allSections.forEach(sec=>sec.addEventListener('click',()=>{
 // console.log('Hello')
 // }))
 
-document.getElementById('section--1');
+// document.getElementById('section--1');
 
-const allButtons=document.getElementsByTagName('button');
-console.log(allButtons);
+// const allButtons=document.getElementsByTagName('button');
+// console.log(allButtons);
 
-console.log(document.getElementsByClassName('btn'));
+// console.log(document.getElementsByClassName('btn'));
 
 //------Creating and inserting elements---
 //1)insertAdjacentHTML
 
-const message=document.createElement('div');
-      message.classList.add('my-message');
+// const message=document.createElement('div');
+//       message.classList.add('my-message');
       // message.innerHTML='<button>Click</button>'
       //  message.textContent='We use cookies for improved functionility and analytics';
-      message.innerHTML='We use cookies for improved functionility and analytics. <button class="btn btn--close--cookie">Get it</button>';
+      // message.innerHTML='We use cookies for improved functionility and analytics. <button class="btn btn--close--cookie">Get it</button>';
 
 
-      header1.prepend(message); //it will show upper side of header(1st child)
+      //header1.prepend(message); //it will show upper side of header(1st child)
       //header1.append(message) //it will show lower side of header(last child)
       //  header1.append(message.cloneNode(true))
 
@@ -242,114 +310,114 @@ const message=document.createElement('div');
       
 
       //Delete Element
-      document.querySelector('.my-message').addEventListener('click',function()
-    {
-      message.remove();
-    })
+    //   document.querySelector('.my-message').addEventListener('click',function()
+    // {
+    //   message.remove();
+    // })
      
     //--------Styles------
 
-    message.style.backgroundColor='darkblue';
-    message.style.width='120%';
+    // message.style.backgroundColor='darkblue';
+    // message.style.width='120%';
 
-    console.log(message.style.height) //it won't work
+    // console.log(message.style.height) //it won't work
    
          
-    message.style.height=Number.parseFloat(getComputedStyle(message).height,10)+30+'px';
-    console.log(getComputedStyle(message).height);
+    // message.style.height=Number.parseFloat(getComputedStyle(message).height,10)+30+'px';
+    // console.log(getComputedStyle(message).height);
     
-    document.documentElement.style.setProperty('--color-primary','skyblue');  //modify the root in css
+    // document.documentElement.style.setProperty('--color-primary','skyblue');  //modify the root in css
 
     //----------Attributes-------
 
-    const logo=document.querySelector('.nav__logo');
-    console.log(logo.src);
-    console.log(logo.alt);
-    logo.alt='beautiful logo';
-    console.log(logo.alt)
+    // const logo=document.querySelector('.nav__logo');
+    // console.log(logo.src);
+    // console.log(logo.alt);
+    // logo.alt='beautiful logo';
+    // console.log(logo.alt)
 
     //non standard
-    console.log(logo.designer)
-    console.log(logo.getAttribute('designer')) //it will work
+    // console.log(logo.designer)
+    // console.log(logo.getAttribute('designer')) //it will work
 
 
-    logo.setAttribute('company','BaNkIsT');
-    console.log(logo.getAttribute('company'));
+    // logo.setAttribute('company','BaNkIsT');
+    // console.log(logo.getAttribute('company'));
 
-    console.log(logo.src)//absolute result
-    console.log(logo.getAttribute('src'))//relative result
+    // console.log(logo.src)//absolute result
+    // console.log(logo.getAttribute('src'))//relative result
     
-    const link=document.querySelector('.nav__link--btn');
-    console.log(link.href);
-    console.log(link.getAttribute('href'));
+    // const link=document.querySelector('.nav__link--btn');
+    // console.log(link.href);
+    // console.log(link.getAttribute('href'));
 
     ///---Data attribute
-    console.log(logo.dataset.versionNumber);
+    // console.log(logo.dataset.versionNumber);
 
-    //classes
+    // //classes
 
-    logo.classList.add('i','j');
-    logo.classList.remove('i','j');
-    logo.classList.toggle('i');
-    logo.classList.contains('i'); //not includes
+    // logo.classList.add('i','j');
+    // logo.classList.remove('i','j');
+    // logo.classList.toggle('i');
+    // logo.classList.contains('i'); //not includes
 
 
    
 
   //----------Types of events and events handlers----------///
 
-  const h1=document.querySelector('h1');
+//   const h1=document.querySelector('h1');
 
-  const alertH1=function(event)
-  {
-    alert('EventListener:Great!You are reading the heading');
-  }
+//   // const alertH1=function(event)
+//   // {
+//   //   alert('EventListener:Great!You are reading the heading');
+//   // }
 
-  h1.addEventListener('mouseenter',alertH1);
-  setTimeout(() => {
-    h1.removeEventListener('mouseenter',alertH1)
-  }, 3000);
+//   h1.addEventListener('mouseenter',alertH1);
+//   setTimeout(() => {
+//     h1.removeEventListener('mouseenter',alertH1)
+//   }, 3000);
 
-//---Event Propagation bubbling and capturing---//
+// //---Event Propagation bubbling and capturing---//
 
-//rgb(255,255,255)
+// //rgb(255,255,255)
 
-const randomInt=function(min,max)
-{
- return Math.floor(Math.random()*(max-min+1)+min);
-}
+// const randomInt=function(min,max)
+// {
+//  return Math.floor(Math.random()*(max-min+1)+min);
+// }
 
-const randomColour=()=>
-  {
-   return `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`
+// const randomColour=()=>
+//   {
+//    return `rgb(${randomInt(0,255)},${randomInt(0,255)},${randomInt(0,255)})`
    
-  }
- console.log(randomColour())
+//   }
+//  console.log(randomColour())
   
-  document.querySelector('.nav__link').addEventListener('click',function(e)
-{
-  this.style.backgroundColor=randomColour();
+//   document.querySelector('.nav__link').addEventListener('click',function(e)
+// {
+//   this.style.backgroundColor=randomColour();
 
-  console.log('Link',e.target,e.currentTarget);   /////e.currentTarget same as this keyword
+//   console.log('Link',e.target,e.currentTarget);   /////e.currentTarget same as this keyword
 
-  //stop propagation
-  // e.stopPropagation();
-});
+//   //stop propagation
+//   // e.stopPropagation();
+// });
 
-document.querySelector('.nav__links').addEventListener('click',function(e)
-{
-  this.style.backgroundColor=randomColour();
-  console.log('Container',e.target,e.currentTarget);
+// document.querySelector('.nav__links').addEventListener('click',function(e)
+// {
+//   this.style.backgroundColor=randomColour();
+//   console.log('Container',e.target,e.currentTarget);
 
-  //Stop Propagation
-  // e.stopPropagation();
-})
+//   //Stop Propagation
+//   // e.stopPropagation();
+// })
 
-document.querySelector('.nav').addEventListener('click',function(e)
-{
-  this.style.backgroundColor=randomColour();
-  console.log('Nav',e.target,e.currentTarget);
-})
+// document.querySelector('.nav').addEventListener('click',function(e)
+// {
+//   this.style.backgroundColor=randomColour();
+//   console.log('Nav',e.target,e.currentTarget);
+// })
 
 
 
@@ -358,31 +426,31 @@ document.querySelector('.nav').addEventListener('click',function(e)
 ///-----Dom Traversing---------------///
 
 //going Downwards:child
-const h=document.querySelector('h1');
-console.log(h.querySelectorAll('.highlight'));
-console.log(h.childNodes)
-console.log(h.children);
+// const h=document.querySelector('h1');
+// console.log(h.querySelectorAll('.highlight'));
+// console.log(h.childNodes)
+// console.log(h.children);
 
-h.firstElementChild.style.color='white';
-h.lastElementChild.style.color='red';
+// h.firstElementChild.style.color='white';
+// h.lastElementChild.style.color='red';
 
-//Going Upwards:parents
+// //Going Upwards:parents
 
-console.log(h.parentNode)
-console.log(h.parentElement)
+// console.log(h.parentNode)
+// console.log(h.parentElement)
   
 // h.closest('.header').style.background='var(--gradient-secondary)';
 // h.closest('h1').style.background='var(--color-tertiary)';
 
 //Going Sideways:siblings
 
-console.log(h.previousElementSibling);
-console.log(h.nextElementSibling);
+// console.log(h.previousElementSibling);
+// console.log(h.nextElementSibling);
 
-console.log(h.previousSibling);
-console.log(h.nextSibling);
+// console.log(h.previousSibling);
+// console.log(h.nextSibling);
 
-console.log(h.parentElement.children)
+// console.log(h.parentElement.children)
 
 // const x=[1,2,4]; ///x is not using anyware
 // [...h.parentElement.children].forEach(function(el)
