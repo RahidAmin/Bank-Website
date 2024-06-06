@@ -246,7 +246,7 @@ const allsSections=document.querySelectorAll('.section');
 const revealSections=function(entries,observer)
 {
   const [entry]=entries;
-  console.log(entry);
+  //console.log(entry);
   
   if(!entry.isIntersecting) return;
   entry.target.classList.remove('section--hidden');
@@ -263,7 +263,33 @@ allsSections.forEach(section=>{
   section.classList.add('section--hidden');
 })
 
+//------------Lazy loading images------------///
 
+const imgTargets=document.querySelectorAll('img[data-src]')
+
+const loadImg=function(entries,observer)
+{
+  const [entry]=entries;
+  if(!entry.isIntersecting) return;
+  
+  //Replace src with data-src
+  entry.target.src=entry.target.dataset.src; //after replace the image,it emit the load event
+
+  //entry.target.classList.remove('lazy-img'); //images load very slow so we should not use this
+ entry.target.addEventListener('load',function(e)
+{
+  entry.target.classList.remove('lazy-img'); 
+})
+ observer.unobserve(entry.target)
+}
+
+const imgObserver=new IntersectionObserver(loadImg,{
+   root:null,
+   threshold:0,
+   rootMargin:'20px',
+})
+
+imgTargets.forEach(img=>imgObserver.observe(img));
 
 
 
